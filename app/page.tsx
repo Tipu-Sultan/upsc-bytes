@@ -3,7 +3,8 @@ import { listCategories } from '@/lib/controllers/category.controller';
 import { listFeed } from '@/lib/controllers/post.controller';
 import { Feed } from '@/components/feed/Feed';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HomePage() {
   await connectDB();

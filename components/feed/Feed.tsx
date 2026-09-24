@@ -33,8 +33,6 @@ export function Feed({ initial, categories = [], initialCategoryId = '' }: FeedP
 
   useEffect(() => { dataRef.current = data; }, [data]);
 
-  useEffect(() => { if (menuOpen) (document.activeElement as HTMLElement | null)?.blur(); }, [menuOpen]);
-
   useEffect(() => {
     const initialKey = feedCacheKey(initialCategoryId, '');
     if (!getCachedFeed(initialKey)) setCachedFeed(initialKey, initial);
@@ -127,7 +125,7 @@ export function Feed({ initial, categories = [], initialCategoryId = '' }: FeedP
           <header className="sticky top-0 z-30 border-b border-white/8 bg-[#070b14]/92 backdrop-blur-xl">
             <div className="flex h-[68px] items-center justify-between gap-3 px-4 sm:px-5">
               <div className="flex min-w-0 items-center gap-3">
-                <button type="button" onClick={() => setMenuOpen(true)} aria-label="Open categories" className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 lg:hidden"><Menu className="h-5 w-5" /></button>
+                <button type="button" onPointerDown={(event) => event.preventDefault()} onClick={() => { (document.activeElement as HTMLElement | null)?.blur(); setMenuOpen(true); requestAnimationFrame(() => (document.activeElement as HTMLElement | null)?.blur()); }} aria-label="Open categories" className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 lg:hidden"><Menu className="h-5 w-5" /></button>
                 <Brand compact />
                 <div className="hidden min-w-0 border-l border-white/10 pl-4 sm:block"><p className="text-[9px] font-black uppercase tracking-[0.24em] text-blue-300">Visual learning</p><h1 className="truncate text-sm font-black text-white">{activeCategory?.name ?? 'UPSC Bytes'}</h1></div>
               </div>
@@ -175,7 +173,7 @@ export function Feed({ initial, categories = [], initialCategoryId = '' }: FeedP
       <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#080c15]/95 px-2 pb-[calc(env(safe-area-inset-bottom)+6px)] pt-2 backdrop-blur-xl lg:hidden">
         <div className="mx-auto grid max-w-lg grid-cols-4 gap-1">
           <BottomNav href="/" icon={<BookOpen className="h-4 w-4" />} label="Home" active={!selectedCategory} />
-          <button type="button" onClick={() => setMenuOpen(true)} className="flex flex-col items-center gap-1 rounded-xl py-1.5 text-[10px] font-bold text-slate-400"><Menu className="h-4 w-4" />Categories</button>
+          <button type="button" onPointerDown={(event) => event.preventDefault()} onClick={() => { (document.activeElement as HTMLElement | null)?.blur(); setMenuOpen(true); requestAnimationFrame(() => (document.activeElement as HTMLElement | null)?.blur()); }} className="flex flex-col items-center gap-1 rounded-xl py-1.5 text-[10px] font-bold text-slate-400"><Menu className="h-4 w-4" />Categories</button>
           <Link href="/search" className="flex flex-col items-center gap-1 rounded-xl py-1.5 text-[10px] font-bold text-slate-400"><Search className="h-4 w-4" />Search</Link>
           <Link href="/admin" className="flex flex-col items-center gap-1 rounded-xl py-1.5 text-[10px] font-bold text-slate-400"><LockKeyhole className="h-4 w-4" />Admin</Link>
         </div>
@@ -202,7 +200,7 @@ function CategoryPanel({ categories, selectedCategory, categoryQuery, setCategor
 }) {
   return <div className={`${mobile ? 'mt-8' : 'mt-9'} flex flex-col`}>
     <p className="mb-3 px-2 text-[10px] font-black uppercase tracking-[0.24em] text-slate-500">Explore categories</p>
-    <div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><input autoFocus={false} value={categoryQuery} onChange={(event) => setCategoryQuery(event.target.value)} placeholder="Search categories…" className="w-full rounded-2xl border border-white/10 bg-white/5 py-3 pl-10 pr-3 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-400/50" /></div>
+    <div className="relative"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" /><input value={categoryQuery} tabIndex={0} onChange={(event) => setCategoryQuery(event.target.value)} placeholder="Search categories…" className="w-full rounded-2xl border border-white/15 bg-white/[0.07] py-3 pl-10 pr-3 text-sm text-white caret-white outline-none placeholder:text-slate-400 focus:border-blue-400/60 focus:bg-white/10 focus:ring-2 focus:ring-blue-400/10" /></div>
     <div className="no-scrollbar mt-4 max-h-[55dvh] space-y-1 overflow-y-auto pr-1">
       <CategoryButton active={!selectedCategory} onClick={() => chooseCategory('')} name="All Bytes" />
       {visibleCategories.map((category) => <CategoryButton key={category.id} active={selectedCategory === category.id} onClick={() => chooseCategory(category.id)} name={category.name} />)}

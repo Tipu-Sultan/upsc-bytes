@@ -26,7 +26,7 @@ export function FeedCard({ post, priority = false }: { post: PostDTO; priority?:
 
   return (
     <article
-      className="feed-item relative mx-auto flex w-full max-w-[760px] items-center justify-center overflow-hidden rounded-none bg-[#090d16] sm:rounded-[28px] sm:border sm:border-white/10 sm:shadow-2xl"
+      className="feed-item relative mx-auto flex w-full max-w-[760px] items-center justify-center overflow-hidden rounded-[22px] bg-[#090d16] sm:rounded-[28px] sm:border sm:border-white/10 sm:shadow-2xl"
       onClick={() => setRevealed((value) => !value)}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -42,7 +42,7 @@ export function FeedCard({ post, priority = false }: { post: PostDTO; priority?:
         <div className="absolute inset-0 bg-black/45" />
       </div>
 
-      <div className="relative h-full w-full p-0 sm:p-3">
+      <div className="relative h-full w-full p-0 p-2 sm:p-3">
         <div className="relative h-full w-full overflow-hidden bg-black sm:rounded-[22px]">
           <Image
             src={post.imageUrl}
